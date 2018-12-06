@@ -126,6 +126,9 @@ public class Test extends TelegramLongPollingBot {
 
         sendSimpleMessage(game.getPlayer1().getChatId(),txt);
         sendSimpleMessage(game.getPlayer2().getChatId(),txt);
+
+        mainMenu(game.getPlayer1().getChatId());
+        mainMenu(game.getPlayer2().getChatId());
     }
 
     private void sendRoundKeyboard(User player,String roundText) {
@@ -142,13 +145,18 @@ public class Test extends TelegramLongPollingBot {
     }
 
     private void handelStart(Update update) {
+        new User(update.getMessage().getChatId().toString(),update.getMessage().getFrom().getFirstName());
+
+        mainMenu(update.getMessage().getChatId().toString());
+    }
+
+    private void mainMenu(String chatId) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
-        sendMessage.setChatId(update.getMessage().getChatId());
+        sendMessage.setChatId(chatId);
         sendMessage.setReplyMarkup(getMainKeyboard());
         sendMessage.setText("خوش آمدید ، لطفا نحوه بازی را مطالعه کنید ، امیدوارم از بازی لذت ببرید!");
 
-        new User(update.getMessage().getChatId().toString(),update.getMessage().getFrom().getFirstName());
 
         try {
             sendMessage(sendMessage);
