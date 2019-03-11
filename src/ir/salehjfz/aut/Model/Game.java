@@ -1,5 +1,8 @@
 package ir.salehjfz.aut.Model;
 
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 import ir.salehjfz.aut.Test;
 import org.telegram.telegrambots.api.objects.Message;
 
@@ -7,16 +10,43 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
+@DatabaseTable(tableName = "Game")
 public class Game {
     static ArrayList<Game> runningGame = new ArrayList<>();
     public static String COOPERATE = "cop";
     public static String DEFEAT = "def";
 
+    @DatabaseField(generatedId = true)
+    private long id;
+    @DatabaseField
     private String player1Id;
+    @DatabaseField
     private String player2Id;
     private HashMap<String,User> players;
     private int roundCount;
     private int currentRound;
+
+    public ArrayList<HashMap<String, String>> getActions() {
+        return actions;
+    }
+
+    public String getPlayer1Id() {
+        return player1Id;
+    }
+
+    public void setPlayer1Id(String player1Id) {
+        this.player1Id = player1Id;
+    }
+
+    public String getPlayer2Id() {
+        return player2Id;
+    }
+
+    public void setPlayer2Id(String player2Id) {
+        this.player2Id = player2Id;
+    }
+
+    @DatabaseField(dataType = DataType.SERIALIZABLE)
     private ArrayList<HashMap<String,String>> actions;
     private ArrayList<HashMap<String,Double>> scores;
     private boolean waiting ;
@@ -24,12 +54,14 @@ public class Game {
     private boolean done = false;
     private HashMap<String,Message> gameMessage;
 
+
+
     public Game() {
         scores = new ArrayList<>();
         actions = new ArrayList<>();
         gameMessage = new HashMap<>();
         players = new HashMap<>();
-        roundCount = (int) Math.ceil(new Random().nextGaussian()*1 + 2.5);
+        roundCount = (int) Math.ceil(new Random().nextGaussian()*1 + 5.5);
         currentRound = 1;
         waiting = true;
         playersScores = new HashMap<>();
@@ -60,6 +92,10 @@ public class Game {
         setP2Score(sum2/scores.size());
 
         done = true;
+    }
+
+    public static void removeRunningGmae(Game game){
+        runningGame.remove(game);
     }
     public boolean setPlayerAction(User player, String playerAction) {
         HashMap action = actions.get(actions.size()-1);
@@ -98,8 +134,8 @@ public class Game {
         else{
 
             if(action.get(player2Id).equals(COOPERATE)){
-                score.put(player1Id,-1.0);
-                score.put(player2Id,3.0);
+                score.put(player1Id,3.0);
+                score.put(player2Id,-1.0);
             }else{
                 score.put(player1Id,0.0);
                 score.put(player2Id,0.0);
@@ -110,6 +146,14 @@ public class Game {
 
     public void setGameMessage(User player ,Message gameMessage) {
         this.gameMessage.put(player.getChatId(),gameMessage);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Message getGameMessage(User player) {

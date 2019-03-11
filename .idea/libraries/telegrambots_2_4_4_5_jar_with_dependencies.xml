@@ -2,8 +2,14 @@
   <library name="telegrambots-2.4.4.5-jar-with-dependencies">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/telegrambots-2.4.4.5-jar-with-dependencies.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ormlite-jdbc-5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ormlite-core-5.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/mysql-connector-java-8.0.15.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/ormlite-jdbc-5.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/ormlite-core-5.1-javadoc.jar!/" />
+    </JAVADOC>
     <SOURCES />
   </library>
 </component>
